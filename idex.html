@@ -1,0 +1,816 @@
+<!DOCTYPE html><!<!DOCTYPE html>
+<html lang="pt-BR">
+
+  <head>    
+    <meta charset="UTF-8" />    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />    
+    <title>Ficha de RPG - Alma Fragmentada</title>    
+    <link rel="icon" type="image/png" href="img/logo.png" />    
+    <style>    
+      @import url("https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Crimson+Text:ital,wght@0,400;1,400&display=swap");  * {    
+    margin: 0;    
+    padding: 0;    
+    box-sizing: border-box;    
+  }    body {
+background: linear-gradient(135deg, #0f0f0f 0%, #1f1f1f 50%, #0f0f0f 100%);
+min-height: 100vh;
+font-family: "Crimson Text", serif;
+color: #cfcfcf;
+overflow-x: hidden;
+position: relative;
+}
+
+/* Runas flutuantes */
+.rune {
+position: absolute;
+font-family: "Cinzel", serif;
+font-size: 1.2rem;
+color: rgba(200, 200, 200, 0.7);
+text-shadow: 0 0 8px rgba(160, 160, 160, 0.8);
+animation: floatRune 6s infinite linear;
+user-select: none;
+}
+@keyframes floatRune {
+0% {
+transform: translateY(100vh) rotate(0deg);
+opacity: 0;
+}
+20% {
+opacity: 1;
+}
+80% {
+opacity: 0.6;
+}
+100% {
+transform: translateY(-50px) rotate(360deg);
+opacity: 0;
+}
+}
+
+.container {
+max-width: 900px;
+margin: 0 auto;
+padding: 40px 20px;
+position: relative;
+z-index: 10;
+}
+
+.character-sheet {
+background: rgba(20, 20, 20, 0.9);
+border: 2px solid #8b8c8f;
+border-radius: 15px;
+padding: 40px;
+box-shadow: 0 0 30px rgba(180, 180, 180, 0.3),
+inset 0 0 50px rgba(0, 0, 0, 0.5);
+position: relative;
+backdrop-filter: blur(5px);
+}
+
+.character-sheet::before {
+content: "";
+position: absolute;
+top: -2px;
+left: -2px;
+right: -2px;
+bottom: -2px;
+background: linear-gradient(45deg, #a0a0a0, #4f4f4f, #7a7a7a, #4f4f4f);
+border-radius: 15px;
+z-index: -1;
+animation: borderGlow 4s ease-in-out infinite alternate;
+}
+@keyframes borderGlow {
+0% {
+opacity: 0.4;
+}
+100% {
+opacity: 0.8;
+}
+}
+
+.header {
+text-align: center;
+margin-bottom: 40px;
+}
+
+.character-name {
+font-family: "Cinzel", serif;
+font-size: 2.5rem;
+font-weight: 600;
+color: #d0d0d0;
+text-shadow: 2px 2px 6px rgba(0, 0, 0, 1);
+margin-bottom: 10px;
+letter-spacing: 2px;
+cursor: pointer;
+}
+.character-title {
+font-style: italic;
+font-size: 1.2rem;
+color: #a0a0a0;
+margin-bottom: 20px;
+opacity: 0.8;
+}
+
+.section-title {
+font-family: "Cinzel", serif;
+font-size: 1.5rem;
+color: #cfcfcf;
+margin-bottom: 20px;
+text-align: center;
+position: relative;
+}
+.section-title::before,
+.section-title::after {
+content: "✦";
+position: absolute;
+top: 50%;
+transform: translateY(-50%);
+color: #666;
+font-size: 0.8rem;
+}
+.section-title::before {
+left: -30px;
+}
+.section-title::after {
+right: -30px;
+}
+
+.stat-block {
+background: rgba(0, 0, 0, 0.6);
+padding: 20px;
+border-radius: 8px;
+border: 1px solid #666;
+transition: all 0.3s ease;
+display: inline-block;
+width: calc(33% - 12px);
+margin: 6px;
+vertical-align: top;
+}
+.stat-block:hover {
+border-color: #aaa;
+box-shadow: 0 0 15px rgba(200, 200, 200, 0.3);
+}
+.stat-label {
+font-family: "Cinzel", serif;
+font-size: 0.9rem;
+color: #999;
+margin-bottom: 8px;
+}
+.stat-value {
+font-size: 1.8rem;
+font-weight: bold;
+color: #cfcfcf;
+text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+.section {
+background: rgba(0, 0, 0, 0.4);
+padding: 20px;
+margin-bottom: 25px;
+border-radius: 10px;
+border-left: 4px solid #666;
+}
+
+.skill {
+background: rgba(0, 0, 0, 0.4);
+padding: 10px;
+border-radius: 6px;
+border-left: 3px solid #666;
+display: flex;
+justify-content: space-between;
+margin-bottom: 6px;
+}
+.skill.proficient {
+border-left-color: #aaa;
+font-weight: bold;
+color: #ddd;
+}
+
+.Imagemchar {
+position: relative;
+width: 60%;
+margin: 0 auto 20px auto;
+display: flex;
+justify-content: center;
+align-items: center;
+}
+
+.img-char {
+display: block;
+width: 100%;
+border-radius: 12px;
+box-shadow: 0 0 20px rgba(200, 200, 200, 0.6),
+0 0 40px rgba(180, 180, 180, 0.3);
+}
+
+/* Setas dentro da imagem */
+.arrow {
+position: absolute;
+top: 50%;
+transform: translateY(-50%);
+font-size: 2rem;
+color: rgba(200, 200, 200, 0.7);
+text-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
+cursor: pointer;
+user-select: none;
+animation: floatArrow 2s ease-in-out infinite;
+transition: color 0.3s;
+z-index: 2;
+}
+
+.arrow:hover {
+color: #ff4444;
+}
+
+.arrow.left {
+left: -35px;
+}
+
+.arrow.right {
+right: -35px;
+}
+
+@keyframes floatArrow {
+0%,
+100% {
+transform: translateY(-50%) translateX(0);
+}
+50% {
+transform: translateY(-50%) translateX(5px);
+}
+}
+
+@keyframes breathe {
+0%,
+100% {
+transform: scale(1);
+}
+50% {
+transform: scale(1.02);
+}
+}
+
+.img-char::after {
+content: "";
+position: absolute;
+top: -10px;
+left: -10px;
+right: -10px;
+bottom: -10px;
+border-radius: 15px;
+background: radial-gradient(
+circle,
+rgba(255, 255, 255, 0.2) 0%,
+transparent 80%
+);
+animation: glow 4s ease-in-out infinite alternate;
+z-index: -1;
+}
+
+@keyframes glow {
+0% {
+opacity: 0.2;
+box-shadow: 0 0 10px rgba(220, 220, 220, 0.3);
+}
+100% {
+opacity: 0.6;
+box-shadow: 0 0 30px rgba(255, 255, 255, 0.8);
+}
+}
+
+.section.magias {
+margin-top: 40px;
+margin-bottom: 40px;
+padding: 30px;
+border: 1px solid #777;
+background: rgba(0, 0, 0, 0.5);
+box-shadow: inset 0 0 15px rgba(200, 200, 200, 0.2);
+}
+
+.bg-rune {
+position: fixed;
+font-family: "Cinzel", serif;
+font-size: 2rem;
+color: rgba(220, 220, 220, 0.25);
+text-shadow: 0 0 15px rgba(220, 220, 220, 0.9),
+0 0 25px rgba(200, 200, 200, 0.7);
+pointer-events: none;
+animation: glowRune 6s ease-in-out forwards;
+z-index: 1;
+}
+
+@keyframes glowRune {
+0% {
+opacity: 0;
+transform: scale(0.8) rotate(0deg);
+}
+20% {
+opacity: 0.8;
+text-shadow: 0 0 20px rgba(240, 240, 240, 1),
+0 0 35px rgba(200, 200, 200, 0.9);
+}
+50% {
+opacity: 1;
+transform: scale(1.2) rotate(180deg);
+text-shadow: 0 0 25px rgba(255, 255, 255, 1),
+0 0 45px rgba(200, 200, 200, 0.9);
+}
+80% {
+opacity: 0.6;
+}
+100% {
+opacity: 0;
+transform: scale(1) rotate(360deg);
+}
+}
+
+.word {
+position: fixed;
+font-family: "Cinzel", serif;
+font-size: 1.4rem;
+color: rgba(230, 230, 230, 0.7);
+text-shadow: 0 0 10px rgba(255, 255, 255, 0.9),
+0 0 25px rgba(180, 180, 180, 0.8);
+pointer-events: none;
+animation: floatWord 8s ease-in-out forwards;
+z-index: 2;
+}
+
+@keyframes floatWord {
+0% {
+opacity: 0;
+transform: translateY(100vh) scale(0.8) rotate(-5deg);
+}
+20% {
+opacity: 0.8;
+}
+50% {
+opacity: 1;
+transform: translateY(50vh) scale(1) rotate(5deg);
+}
+80% {
+opacity: 0.7;
+}
+100% {
+opacity: 0;
+transform: translateY(-50px) scale(0.9) rotate(-5deg);
+}
+}
+
+/* === TEMA BOPE (substituindo o antigo "blood") === */
+body.bope-theme {
+  background: linear-gradient(135deg, #1b1b1b 0%, #000000 50%, #111111 100%);
+  color: #f5e642;
+}
+
+body.bope-theme .character-sheet {
+  background: rgba(10, 10, 10, 0.95);
+  border: 2px solid #f5e642;
+  box-shadow: 0 0 40px rgba(245, 230, 66, 0.35), inset 0 0 60px rgba(0, 0, 0, 0.8);
+}
+
+body.bope-theme .character-name {
+  color: #f5e642;
+  text-shadow: 0 0 15px #b38f00, 0 0 30px #ffd633;
+}
+
+body.bope-theme .section-title {
+  color: #ffeb3b;
+  text-shadow: 0 0 8px #fdd835;
+}
+
+body.bope-theme .stat-block {
+  background: rgba(30, 30, 30, 0.7);
+  border: 1px solid #f5e642;
+}
+
+body.bope-theme .skill {
+  border-left: 3px solid #a18900;
+}
+
+body.bope-theme .img-char {
+  box-shadow: 0 0 30px rgba(255, 204, 0, 0.6), 0 0 50px rgba(150, 120, 0, 0.35);
+}
+
+/* === TEMA BRASIL (verde, amarelo e azul) === */
+body.brasil-theme {
+  background: linear-gradient(135deg, #009739 0%, #fedf00 50%, #002776 100%);
+  color: #ffffff;
+}
+
+body.brasil-theme .character-sheet {
+  background: rgba(0, 40, 20, 0.95);
+  border: 2px solid #fedf00;
+  box-shadow: 0 0 40px rgba(0, 151, 57, 0.35), inset 0 0 60px rgba(0, 39, 118, 0.8);
+}
+
+body.brasil-theme .character-name {
+  color: #fedf00;
+  text-shadow: 0 0 15px #002776, 0 0 30px #009739;
+}
+
+body.brasil-theme .section-title {
+  color: #009739;
+  text-shadow: 0 0 8px #002776;
+}
+
+body.brasil-theme .stat-block {
+  background: rgba(0, 40, 0, 0.6);
+  border: 1px solid #00cc00;
+}
+
+body.brasil-theme .skill {
+  border-left: 3px solid #007a2f;
+}
+
+body.brasil-theme .img-char {
+  box-shadow: 0 0 30px rgba(0, 255, 0, 0.45), 0 0 50px rgba(0, 0, 255, 0.35);
+}
+
+/* Responsive tweaks */
+@media (max-width: 720px) {
+.stat-block {
+width: calc(50% - 12px);
+}
+.Imagemchar {
+width: 100%;
+}
+}
+@media (max-width: 420px) {
+.stat-block {
+width: 100%;
+}
+}
+</style>
+
+  </head>    
+  <body class="bope-theme">    
+    <!-- Runas -->    
+    <div class="rune" style="display:none;"></div>  <div class="container">    
+  <div class="character-sheet">    
+    <!-- Header -->    
+    <div class="header">    
+      <h1 class="character-name">Iana zenin</h1>    
+      <p class="character-title">"Força e Honra"</p>    
+      <p class="player">Jogador: Justice Hammer</p>    
+    </div>    <div class="Imagemchar">    
+  <div class="arrow left" aria-hidden="true">&#9664;</div>    
+  <img    
+    src="img/BOPE1.jpg"    
+    alt="Imagem do Personagem"    
+    class="img-char"    
+  />    
+  <div class="arrow right" aria-hidden="true">&#9654;</div>    
+</div>    
+
+<!-- Aparência -->    
+<div class="section">    
+  <h2 class="section-title">Aparência</h2>    
+  <p>Olhos: verde escuro | Cabelos: curto | Pele: Branca</p>    
+  <p>Idade: 19 | Altura: 1.66 | Peso: 73 kg</p>    
+  <p>batalhão : BOPE = Batalhão de Operações Policiais Especiais, tropa de elite da Polícia Militar do Rio de Janeiro.</p>    
+</div>    
+
+<!-- Informações Básicas -->    
+<div class="section">    
+  <h2 class="section-title">Informações Básicas</h2>    
+  <p>Classe: Lutador, Barbaro | Raça: Humano</p>    
+  <p>Alinhamento: Caotico e bom | Inspiração: 1</p>    
+  <p>Bônus de Proficiência: +2 | XP: 0</p>    
+</div>    
+
+<!-- Atributos -->    
+<div class="stats-grid">    
+  <div class="stat-block">    
+    <div class="stat-label">Força</div>    
+    <div class="stat-value">17 (+3)</div>    
+  </div>    
+  <div class="stat-block">    
+    <div class="stat-label">Destreza</div>    
+    <div class="stat-value">17 (+3)</div>    
+  </div>    
+  <div class="stat-block">    
+    <div class="stat-label">Constituição</div>    
+    <div class="stat-value">16 (+3)</div>    
+  </div>    
+  <div class="stat-block">    
+    <div class="stat-label">Inteligência</div>    
+    <div class="stat-value">5 (-3)</div>    
+  </div>    
+  <div class="stat-block">    
+    <div class="stat-label">Sabedoria</div>    
+    <div class="stat-value">12 (+1)</div>    
+  </div>    
+  <div class="stat-block">    
+    <div class="stat-label">Carisma</div>    
+    <div class="stat-value">15 (+2)</div>    
+  </div>    
+  <div class="stat-block">    
+    <div class="stat-label">Percepção passiva</div>    
+    <div class="stat-value">13</div>    
+  </div>    
+</div>    
+
+<!-- Combate -->    
+<div class="section">    
+  <h2 class="section-title">Combate</h2>    
+  <p>CA: 16 | Iniciativa: +3 | Deslocamento: 9</p>    
+  <p>PV: 27 / 27 | Temporários: 0</p>    
+  <p>Dado de Vida: 1d12+3</p>    
+</div>    
+
+<!-- Perícias -->    
+<div class="skills section">    
+  <h2 class="section-title">Perícias</h2>    
+  <div class="skill-list">    
+    <div class="skill"><span>Arcanismo</span> <span>+0</span></div>    
+    <div class="skill"><span>História</span> <span>+0</span></div>    
+    <div class="skill"><span>Investigação</span> <span>+0</span></div>    
+    <div class="skill proficient"><span>Percepção</span> <span>+2</span></div>    
+    <div class="skill proficient"><span>Sobrevivencia</span> <span>+2</span></div>    
+    <div class="skill"><span>Acrobacia</span> <span>+0</span></div>    
+    <div class="skill"><span>Atletismo</span> <span>+0</span></div>    
+    <div class="skill"><span>Furtividade</span> <span>+0</span></div>    
+  </div>    
+</div>    
+
+<!-- Salvaguardas -->    
+<div class="skills section">    
+  <h2 class="section-title">Salvaguardas</h2>    
+  <div class="skill-list">    
+    <div class="skill proficient"><span>Força</span> <span>+2</span></div>    
+    <div class="skill"><span>Destreza</span> <span>0</span></div>    
+    <div class="skill proficient"><span>Constituição</span> <span>+2</span></div>    
+    <div class="skill"><span>Inteligência</span> <span>0</span></div>    
+    <div class="skill"><span>Sabedoria</span> <span>0</span></div>    
+    <div class="skill"><span>Carisma</span> <span>0</span></div>    
+  </div>    
+</div>    
+
+<!-- Magias -->    
+<div class="section magias">    
+  <h2 class="section-title">0% Energia</h2>    
+  <p>— Espaço para suas técnicas ou artes  —</p>    
+</div>    
+
+<!-- Personalidade -->    
+<div class="section">    
+  <h2 class="section-title">Personalidade</h2>    
+  <p><strong>Traços:Eu enfrento os problemas de frente. Uma solução
+direta é o melhor caminho para o sucesso.</strong> —</p>    
+  <p><strong>Ideais:Independência. Quando pessoas seguem uma ordem
+cegamente, elas suportam um tipo de tirania.
+(Caótico)</strong> —</p>    
+  <p><strong>Vínculos: Eu luto por aqueles que não podem lutar por si
+mesmos.</strong> —</p>    
+  <p><strong>Fraquezas:Eu tenho pouco respeito por aqueles que não se
+provam bons combatentes.</strong> —</p>    
+</div>    
+
+<!-- Inventário -->    
+<div class="section">    
+  <h2 class="section-title">Inventário</h2>    
+  <p>Moedas: PC — | PP — | PE — | PO — | PL —</p>    
+  <ul>    
+    <li>Dagger (ornamental)</li>    
+    <li>Kimono de viagem</li>    
+    <li>Anel com símbolo rúnico</li>    
+    <li>Rações (2 dias)</li>    
+    <li>Cavalo “Zéfiro” com sela</li>    
+  </ul>    
+</div>    
+
+<!-- Proficiências -->    
+<div class="section">    
+  <h2 class="section-title">Proficiência</h2>    
+  <p>Armas: simples e marciais (espada samurai)</p>    
+  <p>Armaduras leves, médias</p>    
+  <p>Ferramentas: ferreiro</p>    
+  <p>Testes de resistência: Força, Constituição</p>    
+  <p>Perícias: Acrobacia, Percepção</p>    
+</div>    
+
+<!-- Características -->    
+<div class="section">    
+  <h2 class="section-title">Características & Feitos</h2>    
+  <p><strong>Talentos:</strong> —</p>    
+  <p><strong>Classe:</strong> 1 Lutador | 1 Barbaro</p>    
+  <p><strong>Background:Soldado</strong> —</p>    
+</div>    
+
+<!-- História -->    
+<div class="section">    
+  <h2 class="section-title">História</h2>    
+  <p>— História do personagem aqui —</p>    
+</div>
+
+  </div>    
+</div>    <script>    
+  // ======= script.js inlined =======    
+  
+  // Adiciona brasas (opcional, mantém o ambiente)    
+  function createEmber() {    
+    const ember = document.createElement("div");    
+    ember.className = "ember";    
+    ember.style.left = Math.random() * 100 + "%";    
+    ember.style.animationDelay = Math.random() * 8 + "s";    
+    ember.style.animationDuration = (Math.random() * 4 + 6) + "s";    
+    document.body.appendChild(ember);    
+  
+    setTimeout(() => {    
+      ember.remove();    
+    }, 10000);    
+  }    
+  setInterval(createEmber, 3000);    
+  
+  // Adiciona runas ocasionais    
+  function createRune() {    
+    const rune = document.createElement("div");    
+    rune.className = "rune";    
+  
+    const runes = ["ᚠ", "ᚢ", "ᚦ", "ᚨ", "ᛃ", "ᛇ", "✧", "✠"];    
+    rune.textContent = runes[Math.floor(Math.random() * runes.length)];    
+  
+    rune.style.top = Math.random() * 100 + "%";    
+    rune.style.left = Math.random() * 100 + "%";    
+    rune.style.animationDelay = Math.random() * 3 + "s";    
+  
+    document.body.appendChild(rune);    
+  
+    setTimeout(() => {    
+      rune.remove();    
+    }, 6000);    
+  }    
+  setInterval(createRune, 4000);    
+  
+  // Efeito de hover nos blocos de estatística    
+  document.querySelectorAll(".stat-block").forEach((block) => {    
+    block.addEventListener("mouseenter", function () {    
+      this.style.transform = "translateY(-2px)";    
+    });    
+    block.addEventListener("mouseleave", function () {    
+      this.style.transform = "translateY(0)";    
+    });    
+  });    
+  
+  // Runas de fundo brilhando e sumindo    
+  function createBgRune() {    
+    const rune = document.createElement("div");    
+    rune.className = "bg-rune";    
+  
+    const runes = ["ᚠ", "ᚢ", "ᚦ", "ᚨ", "ᛃ", "ᛇ", "✧", "✠"];    
+    rune.textContent = runes[Math.floor(Math.random() * runes.length)];    
+  
+    rune.style.top = Math.random() * 100 + "vh";    
+    rune.style.left = Math.random() * 100 + "vw";    
+  
+    document.body.appendChild(rune);    
+  
+    setTimeout(() => {    
+      rune.remove();    
+    }, 6000);    
+  }    
+  setInterval(createBgRune, 3500);    
+  
+  // === FRASES ===    
+  // Frases normais    
+  const normalWords = [    
+    "Who am I?",    
+    "Why do I fight?",    
+    "Lost soul",    
+    "My blade remembers",    
+    "Between shadows",    
+    "Echoes of war",    
+  ];    
+  
+  // Frases psicopatas (modo alternativo)    
+  const bloodWords = [    
+    "RUN",    
+    "I'M GONNA KILL YOU",    
+    "YOUR BLOOD IS MINE",    
+    "NO ESCAPE",    
+    "DIE, DIE, DIE",    
+    "THE CARRASCO IS HERE",    
+  ];    
+  
+  // Variável que controla qual lista usar    
+  let activeWords = normalWords;    
+  
+  // Palavras flutuantes    
+  function createWord() {    
+    const word = document.createElement("div");    
+    word.className = "word";    
+  
+    // pega da lista ativa    
+    word.textContent = activeWords[Math.floor(Math.random() * activeWords.length)];    
+  
+    word.style.left = Math.random() * 80 + "vw";    
+    word.style.top = Math.random() * 80 + "vh";    
+  
+    document.body.appendChild(word);    
+  
+    setTimeout(() => {    
+      word.remove();    
+    }, 8000);    
+  }    
+  setInterval(createWord, 9000);    
+  
+  // Runas sobre a imagem do personagem    
+  function createCharRune() {    
+    const charContainer = document.querySelector(".Imagemchar");    
+    if (!charContainer) return;    
+  
+    const rune = document.createElement("div");    
+    rune.className = "bg-rune";    
+    const runes = ["ᚠ", "ᚢ", "ᚦ", "ᚨ", "ᛃ", "✠"];    
+    rune.textContent = runes[Math.floor(Math.random() * runes.length)];    
+  
+    rune.style.position = "absolute";    
+    rune.style.top = Math.random() * 80 + "%";    
+    rune.style.left = Math.random() * 80 + "%";    
+    rune.style.fontSize = "1.5rem";    
+    rune.style.opacity = "0.4";    
+  
+    charContainer.appendChild(rune);    
+  
+    setTimeout(() => {    
+      rune.remove();    
+    }, 4000);    
+  }    
+  setInterval(createCharRune, 5000);    
+  
+  // Lista de imagens    
+  const images = ["img/BOPE1.jpg", "img/Bope.jpg"];    
+  let currentImage = 0;    
+  
+  const charImg = document.querySelector(".img-char");    
+  const leftArrow = document.querySelector(".arrow.left");    
+  const rightArrow = document.querySelector(".arrow.right");    
+  
+  if (leftArrow) {    
+    leftArrow.addEventListener("click", () => {    
+      currentImage = (currentImage - 1 + images.length) % images.length;    
+      if (charImg) charImg.src = images[currentImage];    
+    });    
+  }    
+  if (rightArrow) {    
+    rightArrow.addEventListener("click", () => {    
+      currentImage = (currentImage + 1) % images.length;    
+      if (charImg) charImg.src = images[currentImage];    
+    });    
+  }    
+  
+  // === Easter Egg adaptado: alterna BOPE ⇄ BRASIL + nome + frases ===    
+  document.addEventListener("DOMContentLoaded", () => {    
+    const charName = document.querySelector(".character-name");    
+    
+    if (charName) {    
+      const originalName = charName.textContent;    
+    
+      charName.addEventListener("click", () => {    
+        // se estiver BOPE, passa para BRASIL (modo alternativo)    
+        if (document.body.classList.contains("bope-theme")) {    
+          document.body.classList.remove("bope-theme");    
+          document.body.classList.add("brasil-theme");    
+          charName.textContent = "O Carrasco";    
+          activeWords = bloodWords; // mantém as frases 'fortes' no modo alternativo    
+        } else if (document.body.classList.contains("brasil-theme")) {    
+          // se estiver BRASIL, volta para BOPE    
+          document.body.classList.remove("brasil-theme");    
+          document.body.classList.add("bope-theme");    
+          charName.textContent = originalName;    
+          activeWords = normalWords;    
+        } else {    
+          // fallback: aplica BOPE    
+          document.body.classList.add("bope-theme");    
+          charName.textContent = originalName;    
+          activeWords = normalWords;    
+        }    
+      });    
+    }    
+  });    
+</script>    </body>    
+</html> html>
+
+<html>
+<head>
+  <meta http-equiv="CONTENT-TYPE" content="text/html; charset=UTF-8">
+  <title>Hello, World!</title>
+</head>
+<body>
+  <h1>
+   
+  </h1>
+</body>
+</html>
+
+<html>
+<head>
+  <meta http-equiv="CONTENT-TYPE" content="text/html; charset=UTF-8">
+  <title>Hello, World!</title>
+</head>
+<body>
+  <h1>
+    Hello, World!
+  </h1>
+</body>
+</html>
