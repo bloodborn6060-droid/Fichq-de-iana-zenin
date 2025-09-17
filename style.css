@@ -358,3 +358,12 @@ a {
   transition: color 0.3s;
   font-size: 35px;
   }
+
+h3 {
+  text-align: center;
+  margin-bottom: 15px;
+  font-family: "Cinzel", serif;
+  font-size: 1.3rem;
+  color: #ff4d4d;
+  text-shadow: 0 0 10px #ff1a1a, 0 0 20px #b30000;
+}
