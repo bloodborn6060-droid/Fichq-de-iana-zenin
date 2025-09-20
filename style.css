@@ -10,9 +10,10 @@ body {
   background: linear-gradient(135deg, #1a0000 0%, #330000 50%, #0d0d0d 100%);
   min-height: 100vh;
   font-family: "Crimson Text", serif;
-  color: #f1f1f1;
+  color: #ff4d4d;
   overflow-x: hidden;
   position: relative;
+  text-shadow: 0 0 8px #b30000, 0 0 15px #ff0000;
 }
 
 /* Runas flutuantes */
@@ -51,12 +52,12 @@ body {
 }
 
 .character-sheet {
-  background: rgba(0, 0, 0, 0.85);
+  background: rgba(0, 0, 0, 0.95);
   border: 2px solid #ffd700;
   border-radius: 15px;
   padding: 40px;
   box-shadow: 0 0 30px rgba(255, 215, 0, 0.3),
-    inset 0 0 50px rgba(0, 0, 0, 0.6);
+    inset 0 0 50px rgba(0, 0, 0, 0.8);
   position: relative;
   backdrop-filter: blur(5px);
 }
@@ -68,8 +69,328 @@ body {
   left: -2px;
   right: -2px;
   bottom: -2px;
-  background: linear-gradient(45deg, #ffd700, #444, #ffd700, #111);
+  background: linear-gradient(45deg, #ffd700, #330000, #ffd700, #111);
   border-radius: 15px;
+  z-index: -1;
+  animation: borderGlow 4s ease-in-out infinite alternate;
+}
+@keyframes borderGlow {
+  0% {
+    opacity: 0.4;
+  }
+  100% {
+    opacity: 0.8;
+  }
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.character-name {
+  font-family: "Cinzel", serif;
+  font-size: 2.5rem;
+  font-weight: 600;
+  color: #ff1a1a;
+  text-shadow: 2px 2px 10px #000, 0 0 15px #ff0000;
+  margin-bottom: 10px;
+  letter-spacing: 2px;
+  position: relative;
+  display: inline-block;
+}
+
+/* Presas no nome */
+.character-name::before,
+.character-name::after {
+  content: "";
+  position: absolute;
+  bottom: -15px;
+  width: 6px;
+  height: 18px;
+  background: #fff;
+  border-radius: 0 0 50% 50%;
+  box-shadow: 0 0 6px #ff0000, 0 0 12px #b30000;
+}
+.character-name::before {
+  left: 25%;
+}
+.character-name::after {
+  right: 25%;
+}
+
+.character-title {
+  font-style: italic;
+  font-size: 1.2rem;
+  color: #ff4d4d;
+  margin-bottom: 20px;
+  opacity: 0.9;
+  text-shadow: 0 0 6px #b30000, 0 0 12px #ff0000;
+}
+
+.section-title {
+  font-family: "Cinzel", serif;
+  font-size: 1.5rem;
+  color: #ff3333;
+  margin-bottom: 20px;
+  text-align: center;
+  position: relative;
+  text-shadow: 0 0 10px #ff1a1a, 0 0 20px #b30000;
+}
+.section-title::before,
+.section-title::after {
+  content: "✦";
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #ffd700;
+  font-size: 0.8rem;
+}
+.section-title::before {
+  left: -30px;
+}
+.section-title::after {
+  right: -30px;
+}
+
+.stat-block {
+  background: rgba(0, 0, 0, 0.7);
+  padding: 20px;
+  border-radius: 8px;
+  border: 1px solid #ff1a1a;
+  transition: all 0.3s ease;
+}
+.stat-block:hover {
+  border-color: #ffd700;
+  box-shadow: 0 0 15px rgba(255, 0, 0, 0.6);
+}
+.stat-label {
+  font-family: "Cinzel", serif;
+  font-size: 0.9rem;
+  color: #ff6666;
+  margin-bottom: 8px;
+}
+.stat-value {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #ffd700;
+  text-shadow: 1px 1px 3px #000;
+}
+
+.section {
+  background: rgba(0, 0, 0, 0.6);
+  padding: 20px;
+  margin-bottom: 25px;
+  border-radius: 10px;
+  border-left: 4px solid #ff0000;
+}
+
+.skill {
+  background: rgba(0, 0, 0, 0.5);
+  padding: 10px;
+  border-radius: 6px;
+  border-left: 3px solid #ffd700;
+  display: flex;
+  justify-content: space-between;
+  color: #ff4d4d;
+}
+.skill.proficient {
+  border-left-color: #ffaa00;
+  font-weight: bold;
+  color: #ffd700;
+}
+
+.Imagemchar {
+  position: relative;
+  width: 60%;
+  margin: 0 auto 20px auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.img-char {
+  display: block;
+  width: 100%;
+  border-radius: 12px;
+  box-shadow: 0 0 25px rgba(255, 0, 0, 0.7),
+    0 0 40px rgba(0, 0, 0, 0.9);
+}
+
+/* Setas dentro da imagem */
+.arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 2rem;
+  color: rgba(255, 0, 0, 0.8);
+  text-shadow: 0 0 8px #000;
+  cursor: pointer;
+  user-select: none;
+  animation: floatArrow 2s ease-in-out infinite;
+  transition: color 0.3s;
+  z-index: 2;
+}
+
+.arrow:hover {
+  color: #ff3333;
+}
+
+.arrow.left {
+  left: -35px;
+}
+
+.arrow.right {
+  right: -35px;
+}
+
+@keyframes floatArrow {
+  0%,
+  100% {
+    transform: translateY(-50%) translateX(0);
+  }
+  50% {
+    transform: translateY(-50%) translateX(5px);
+  }
+}
+
+/* Glow rúnico alternando */
+.img-char::after {
+  content: "";
+  position: absolute;
+  top: -10px;
+  left: -10px;
+  right: -10px;
+  bottom: -10px;
+  border-radius: 15px;
+  background: radial-gradient(
+    circle,
+    rgba(255, 0, 0, 0.25) 0%,
+    transparent 80%
+  );
+  animation: glow 4s ease-in-out infinite alternate;
+  z-index: -1;
+}
+
+@keyframes glow {
+  0% {
+    opacity: 0.2;
+  }
+  100% {
+    opacity: 0.7;
+  }
+}
+
+/* Seção de Magias */
+.section.magias {
+  margin-top: 40px;
+  margin-bottom: 40px;
+  padding: 30px;
+  border: 1px solid #ff0000;
+  background: rgba(0, 0, 0, 0.7);
+  box-shadow: inset 0 0 20px rgba(255, 0, 0, 0.5);
+}
+
+/* Runas de fundo fixas */
+.bg-rune {
+  position: fixed;
+  font-family: "Cinzel", serif;
+  font-size: 2rem;
+  color: rgba(255, 0, 0, 0.3);
+  text-shadow: 0 0 20px rgba(0, 0, 0, 1),
+    0 0 25px rgba(255, 0, 0, 0.8);
+  pointer-events: none;
+  animation: glowRune 6s ease-in-out forwards;
+  z-index: 1;
+}
+
+@keyframes glowRune {
+  0% {
+    opacity: 0;
+    transform: scale(0.8) rotate(0deg);
+  }
+  20% {
+    opacity: 0.8;
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2) rotate(180deg);
+  }
+  80% {
+    opacity: 0.6;
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1) rotate(360deg);
+  }
+}
+
+.word {
+  position: fixed;
+  font-family: "Cinzel", serif;
+  font-size: 1.4rem;
+  color: #ff0000;
+  text-shadow: 0 0 12px #000, 0 0 20px #ff1a1a;
+  pointer-events: none;
+  animation: floatWord 8s ease-in-out forwards;
+  z-index: 2;
+}
+
+@keyframes floatWord {
+  0% {
+    opacity: 0;
+    transform: translateY(100vh) scale(0.8) rotate(-5deg);
+  }
+  20% {
+    opacity: 0.8;
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(50vh) scale(1) rotate(5deg);
+  }
+  80% {
+    opacity: 0.7;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-50px) scale(0.9) rotate(-5deg);
+  }
+}
+
+.inventory-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.inventory-list li {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.item-icon {
+  width: 60px;
+  height: 60px;
+  margin-right: 8px;
+  object-fit: contain;
+}
+
+a {
+  color: #ffd700;
+  text-decoration: none;
+  transition: color 0.3s;
+  font-size: 35px;
+}
+
+h3 {
+  text-align: center;
+  margin-bottom: 15px;
+  font-family: "Cinzel", serif;
+  font-size: 1.3rem;
+  color: #ff4d4d;
+  text-shadow: 0 0 10px #ff1a1a, 0 0 20px #b30000;
+}  border-radius: 15px;
   z-index: -1;
   animation: borderGlow 4s ease-in-out infinite alternate;
 }
