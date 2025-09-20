@@ -121,7 +121,7 @@ setInterval(createCharRune, 5000);
 
 // Lista de imagens
 const images = [
-  "BOPE1.jpg",
+  "MMA.jpg",
   "Bope.jpg",
 ];
 let currentImage = 0;
