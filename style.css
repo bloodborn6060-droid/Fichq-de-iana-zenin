@@ -7,13 +7,16 @@
 }
 
 body {
-  background: linear-gradient(135deg, #1a0000 0%, #330000 50%, #0d0d0d 100%);
+  background: linear-gradient(135deg, #000000 0%, #1a0000 40%, #330000 100%);
   min-height: 100vh;
   font-family: "Crimson Text", serif;
-  color: #ff4d4d;
+  color: #ff1a1a; /* vermelho vibrante */
   overflow-x: hidden;
   position: relative;
-  text-shadow: 0 0 8px #b30000, 0 0 15px #ff0000;
+  text-shadow: 
+    0 0 6px #990000, 
+    0 0 12px #ff0000, 
+    0 0 20px #ff1a1a;
 }
 
 /* Runas flutuantes */
